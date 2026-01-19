@@ -771,10 +771,10 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             }
         };
 
-        // 发送事件到Netlify Function（TikTok Events API）
+        // 发送事件到Cloudflare Worker（TikTok Events API）
         const sendTikTokEvent = async (eventName, eventParams = {}) => {
             try {
-                await fetch('https://io-kr.netlify.app/.netlify/functions/tiktok-event', {
+                await fetch('/api/tiktok-event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
