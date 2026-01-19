@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D5N8BT3C77UFLMP0ARDG');
+  ttq.page({
+    content_id: 'coffee_coupon_landing_page'
+  });
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="폰만으로 30,000원 적립금 받기">
+    <meta name="theme-color" content="#0f0f12">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+    <title>🚀 폰만으로 30,000원 받기</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f12;
+            --bg-container: rgba(10, 10, 10, 0.8);
+            --color-primary: #0ff;
+            --color-secondary: #f0f;
+            --color-text: #fff;
+            --color-text-muted: #aaa;
+            --color-text-light: #ccc;
+            --border-radius: 15px;
+            --border-radius-lg: 20px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 30px;
+            --shadow-glow: 0 0 30px rgba(0, 255, 255, 0.2);
+            --shadow-pulse: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--color-text);
+            text-align: center;
+            padding: var(--spacing-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.05) 2px, rgba(255,255,255,0.05) 4px);
+            z-index: -1;
+            pointer-events: none;
+            animation: pan 20s linear infinite;
+            will-change: background-position;
+        }
+
+        @keyframes pan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 40px var(--spacing-lg);
+            background: var(--bg-container);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-glow);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            margin: auto;
+        }
+
+        .neon-title {
+            font-size: clamp(20px, 5vw, 32px);
+            color: var(--color-text);
+            text-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-primary), 0 0 30px var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .bonus {
+            font-size: clamp(18px, 4vw, 28px);
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--color-secondary), var(--color-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: shine 3s ease-in-out infinite alternate;
+            margin: var(--spacing-md) 0;
+            will-change: background-position;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .step-box {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px dashed var(--color-primary);
+            padding: var(--spacing-md);
+            margin: 25px auto;
+            border-radius: var(--border-radius);
+            font-size: clamp(16px, 3vw, 18px);
+            color: var(--color-primary);
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            animation: scan 3s ease-in-out infinite;
+            will-change: left;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .btn-copy {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--color-secondary);
+            color: var(--color-text);
+            font-size: clamp(16px, 3vw, 18px);
+            font-weight: 700;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-pulse);
+            animation: pulse 2s ease-in-out infinite;
+            transition: transform 0.2s ease;
+            will-change: transform, box-shadow;
+        }
+
+        .btn-copy:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-copy:active {
+            transform: scale(0.98);
+        }
+
+        .btn-copy:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        /* 内联复制按钮样式 */
+        .code-with-copy {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .btn-copy-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--color-primary);
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid var(--color-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 8px;
+        }
+
+        .btn-copy-inline:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .btn-copy-inline:active {
+            transform: scale(0.95);
+        }
+
+        .btn-copy-inline:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .clipboard-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+            }
+        }
+
+        .btn-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            width: 100%;
+            padding: 18px;
+            background: #00C300;
+            color: #ffffff;
+            font-size: clamp(16px, 3vw, 18px);
+            font-weight: 700;
+            border: 2px solid #00C300;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: var(--spacing-sm);
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 195, 0, 0.3);
+        }
+
+        .btn-line:hover {
+            background: #00B300;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 195, 0, 0.4);
+        }
+
+        .btn-line:active {
+            transform: translateY(0);
+        }
+
+        .btn-line:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .step-box:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .line-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: var(--spacing-sm);
+            }
+
+            .container {
+                padding: 25px var(--spacing-md);
+                border-radius: var(--border-radius);
+            }
+
+            .step-box {
+                padding: var(--spacing-md);
+                margin: var(--spacing-md) auto;
+            }
+
+            .btn-copy, .btn-line {
+                padding: var(--spacing-md);
+            }
+
+            .line-icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .code-with-copy {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-copy-inline {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: var(--spacing-md) var(--spacing-md);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* 提取内联样式为类 */
+        .text-muted {
+            color: var(--color-text-muted);
+            font-size: 14px;
+        }
+
+        /* 紧迫感样式 */
+        .urgent-limit {
+            color: #ff4444;
+            font-size: 15px;
+            font-weight: 700;
+            animation: urgent-pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            margin: 8px 0;
+            display: inline-block;
+        }
+
+        @keyframes urgent-pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        .urgent-limit::before {
+            content: '⚠️ ';
+            margin-right: 4px;
+        }
+
+        .description-text {
+            color: var(--color-text-light);
+            margin: var(--spacing-lg) 0;
+            font-size: clamp(14px, 3vw, 16px);
+            line-height: 1.6;
+        }
+
+        .description-text strong {
+            color: var(--color-primary);
+        }
+
+        .instructions {
+            text-align: left;
+            color: var(--color-text);
+            margin-top: var(--spacing-lg);
+            font-weight: 700;
+        }
+
+        .instructions p {
+            margin: 0 0 8px 0;
+        }
+
+        .instructions p:last-child {
+            margin: 0;
+        }
+
+        .instructions .highlight {
+            color: var(--color-primary);
+        }
+
+        /* 确认对话框样式 */
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: var(--spacing-md);
+        }
+
+        .confirmation-modal.hide {
+            display: none;
+        }
+
+        .confirmation-content {
+            background: var(--bg-container);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-glow);
+            text-align: center;
+        }
+
+        .confirmation-title {
+            font-size: clamp(20px, 4vw, 28px);
+            color: var(--color-text);
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+        }
+
+        .confirmation-message {
+            font-size: clamp(14px, 3vw, 16px);
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        .confirmation-question {
+            font-size: clamp(15px, 3vw, 18px);
+            color: var(--color-text);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+
+        .btn-confirm {
+            padding: 16px;
+            font-size: clamp(16px, 3vw, 18px);
+            font-weight: 700;
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--color-primary);
+        }
+
+        .btn-confirm:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-confirm:active {
+            transform: translateY(0);
+        }
+
+        .btn-confirm-yes {
+            background: var(--color-primary);
+            color: var(--bg-primary);
+            border-color: var(--color-primary);
+        }
+
+        .btn-confirm-yes:hover {
+            background: rgba(0, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        .main-content {
+            display: none !important;
+        }
+
+        .main-content.show {
+            display: block !important;
+        }
+
+        /* 卡片提示样式 */
+        .toast-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 15, 18, 0.95);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius);
+            padding: 20px 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-card.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .toast-card.hide {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+
+        .toast-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 确认对话框 -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+            <h2 class="confirmation-title">🎉 축하합니다!</h2>
+            <p class="confirmation-message">
+                30,000원 상당의 적립금을 즉시 받으실 수 있습니다.<br>
+                다음 정보를 확인해 주세요.
+            </p>
+            <p class="confirmation-question">
+                Q. LINE을(를) 보유하고 계시며, 주동적으로 연락을 주실 수 있으신가요?
+            </p>
+            <div class="confirmation-buttons">
+                <button class="btn-confirm btn-confirm-yes" onclick="handleConfirm(true)" type="button">
+                    네, 가능합니다.
+                </button>
+                <button class="btn-confirm" onclick="handleConfirm(false)" type="button">
+                    아니요, 불가능합니다.
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主页面内容 -->
+    <main class="container" id="mainContent">
+        <h1 class="neon-title">☕ 커피 쿠폰은 LINE에서만!</h1>
+        
+        <div class="bonus" role="banner">⚡️ 한정 30,000원 적립금 선물 ⚡️</div>
+        <p class="urgent-limit">(선착순 200명 한정)</p>
+
+        <p class="description-text">
+            폰만으로 포인트 적립! 다양한 보상으로 교환하세요.
+        </p>
+
+        <section class="instructions" aria-label="사용 방법">
+            <p>① 하단 버튼을 눌러 LINE 친구추가</p>
+            <div>
+                <p style="margin-bottom: 8px;">② 친구추가 후 [비밀코드]를 보내주세요</p>
+                <p class="code-with-copy" style="margin-left: 20px; margin-top: 0;">
+                    🔑 비밀코드: <span class="highlight">[CoffeeJJang]</span>
+                    <button class="btn-copy-inline" onclick="copyText()" aria-label="비밀코드 복사" type="button">
+                        <svg class="clipboard-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"/>
+                        </svg>
+                        복사
+                    </button>
+                </p>
+            </div>
+            <p>③ 즉시 적립 절차를 안내해 드립니다</p>
+        </section>
+
+        <div id="textToCopy" style="display: none;">[CoffeeJJang]</div>
+        <a href="https://linkto.tw/9ACJk7DD" id="line-btn" class="btn-line" target="_blank" rel="noopener noreferrer" aria-label="LINE 친구추가 하기 (새 창에서 열림)">
+            <svg class="line-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.27l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.058.9-.029.193-.1.495-.131.644-.037.18-.061.295.048.485.108.19.485.623 1.208.623.72 0 1.078-.43 1.21-.623.108-.19.083-.304.044-.485-.027-.15-.098-.45-.127-.644-.02-.134-.059-.599.056-.9.134-.332.664-.508 1.051-.59C19.743 19.156 24 15.125 24 10.314" fill="#ffffff"/>
+            </svg>
+            LINE 친구추가 하기
+        </a>
+    </main>
+
+    <script>
+        'use strict';
+
+        // 音频上下文单例，避免重复创建
+        let audioContext = null;
+        const getAudioContext = () => {
+            if (!audioContext) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioContext = new AudioContextClass();
+                }
+            }
+            return audioContext;
+        };
+
+        // 通用音频播放函数
+        const playSound = (frequency, duration, gainValue = 0.3) => {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                
+                // 如果上下文被暂停，恢复它
+                if (ctx.state === 'suspended') {
+                    ctx.resume();
+                }
+                
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                const now = ctx.currentTime;
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(gainValue, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+                
+                oscillator.start(now);
+                oscillator.stop(now + duration);
+            } catch (error) {
+                // 静默失败，不影响主要功能
+                console.debug('Audio playback failed:', error);
+            }
+        };
+
+        const playSuccessSound = () => {
+            playSound(800, 0.2, 0.3);
+            // 添加第二个音调创造成功感
+            setTimeout(() => playSound(1000, 0.15, 0.2), 50);
+        };
+
+        const playErrorSound = () => {
+            playSound(400, 0.15, 0.2);
+        };
+
+        // 显示卡片提示
+        const showToast = (message, icon = '✅') => {
+            // 移除已存在的提示
+            const existingToast = document.querySelector('.toast-card');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // 创建新的提示卡片
+            const toast = document.createElement('div');
+            toast.className = 'toast-card';
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            // 触发显示动画
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            // 1秒后自动隐藏并移除
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 1000);
+        };
+
+        // 复制文本到剪贴板
+        const copyText = async () => {
+            const textElement = document.getElementById('textToCopy');
+            if (!textElement) {
+                console.error('Text element not found');
+                return;
+            }
+            
+            const text = textElement.textContent?.trim() || textElement.innerText?.trim();
+            if (!text) {
+                playErrorSound();
+                showToast('복사할 텍스트가 없습니다', '❌');
+                return;
+            }
+            
+            // 优先使用现代 Clipboard API
+            if (navigator.clipboard?.writeText) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    playSuccessSound();
+                    showToast('복사 완료!', '✅');
+                    // 发送到Netlify Function
+                    await sendTikTokEvent('CopyCode', {
+                        content_id: 'coffee_coupon_code',
+                        content_type: 'coupon_code',
+                        content_name: 'CoffeeJJang'
+                    });
+                    // TikTok Pixel 跟踪复制事件
+                    if (typeof ttq !== 'undefined') {
+                        ttq.track('CopyCode', {
+                            content_id: 'coffee_coupon_code'
+                        });
+                    }
+                    return;
+                } catch (error) {
+                    console.warn('Clipboard API failed, trying fallback:', error);
+                }
+            }
+            
+            // 降级方案：使用传统方法
+            playErrorSound();
+            try {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                textArea.style.opacity = '0';
+                textArea.setAttribute('readonly', '');
+                textArea.setAttribute('aria-hidden', 'true');
+                
+                document.body.appendChild(textArea);
+                textArea.select();
+                textArea.setSelectionRange(0, text.length);
+                
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                if (successful) {
+                    playSuccessSound();
+                    showToast('복사 완료!', '✅');
+                    // 发送到Netlify Function
+                    await sendTikTokEvent('CopyCode', {
+                        content_id: 'coffee_coupon_code',
+                        content_type: 'coupon_code',
+                        content_name: 'CoffeeJJang'
+                    });
+                    // TikTok Pixel 跟踪复制事件
+                    if (typeof ttq !== 'undefined') {
+                        ttq.track('CopyCode', {
+                            content_id: 'coffee_coupon_code'
+                        });
+                    }
+                } else {
+                    throw new Error('execCommand failed');
+                }
+            } catch (error) {
+                console.error('Copy failed:', error);
+                showToast('복사 실패', '❌');
+            }
+        };
+
+        // 发送事件到Netlify Function（TikTok Events API）
+        const sendTikTokEvent = async (eventName, eventParams = {}) => {
+            try {
+                await fetch('https://io-kr.netlify.app/.netlify/functions/tiktok-event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: eventName,
+                        event_time: Math.floor(Date.now() / 1000),
+                        url: window.location.href,
+                        ...eventParams
+                    })
+                });
+            } catch (error) {
+                console.error(`Failed to send ${eventName} event to Netlify Function:`, error);
+            }
+        };
+
+        // 确认对话框处理
+        const handleConfirm = async (confirmed) => {
+            const modal = document.getElementById('confirmationModal');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (confirmed) {
+                // 用户选择"네, 가능합니다"
+                // 发送到Netlify Function
+                await sendTikTokEvent('ConfirmLine', {
+                    content_id: 'line_confirmation_yes',
+                    content_type: 'confirmation',
+                    content_name: 'LINE确认-是'
+                });
+                // TikTok Pixel 跟踪确认按钮点击事件
+                if (typeof ttq !== 'undefined') {
+                    ttq.track('ConfirmLine', {
+                        content_id: 'line_confirmation_yes'
+                    });
+                }
+                modal.classList.add('hide');
+                mainContent.classList.add('show');
+                // 保存用户选择到localStorage
+                localStorage.setItem('line_confirmed', 'true');
+            } else {
+                // 用户选择"아니요, 불가능합니다"
+                // 发送到Netlify Function
+                await sendTikTokEvent('RejectLine', {
+                    content_id: 'line_confirmation_no',
+                    content_type: 'confirmation',
+                    content_name: 'LINE确认-否'
+                });
+                // TikTok Pixel 跟踪拒绝按钮点击事件
+                if (typeof ttq !== 'undefined') {
+                    ttq.track('RejectLine', {
+                        content_id: 'line_confirmation_no'
+                    });
+                }
+                alert('LINE을 사용하지 않으시면 적립금을 받으실 수 없습니다.');
+                // 可以选择关闭页面或显示其他信息
+                // window.close(); // 如果是在新窗口中打开，可以关闭
+            }
+        };
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 检查用户是否已经确认过
+            const alreadyConfirmed = localStorage.getItem('line_confirmed');
+            const modal = document.getElementById('confirmationModal');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (alreadyConfirmed === 'true') {
+                // 如果已经确认过，直接显示主页面
+                modal.classList.add('hide');
+                mainContent.classList.add('show');
+            } else {
+                // 否则显示确认对话框
+                modal.classList.remove('hide');
+                mainContent.classList.remove('show');
+            }
+            // 为文本框添加键盘支持（Enter键复制）
+            const textElement = document.getElementById('textToCopy');
+            if (textElement) {
+                textElement.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        copyText();
+                    }
+                });
+            }
+
+            // 为复制按钮添加键盘支持（已通过button元素自动支持）
+            const copyButton = document.querySelector('.btn-copy');
+            if (copyButton) {
+                copyButton.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        copyText();
+                    }
+                });
+            }
+
+            // LINE按钮点击跟踪
+            const lineButton = document.getElementById('line-btn');
+            if (lineButton) {
+                lineButton.addEventListener('click', async (e) => {
+                    e.preventDefault(); // 阻止默认跳转
+                    
+                    const lineUrl = lineButton.href; // 获取LINE链接
+                    
+                    // 1. 发送到Netlify Function
+                    await sendTikTokEvent('ClickButton', {
+                        content_id: 'line_friend_add_button',
+                        content_type: 'button_click',
+                        content_name: 'LINE 친구추가'
+                    });
+                    
+                    // 2. TikTok Pixel 跟踪LINE按钮点击事件（客户端跟踪）
+                    if (typeof ttq !== 'undefined') {
+                        ttq.track('ClickButton', {
+                            content_id: 'line_friend_add_button'
+                        });
+                    }
+                    
+                    // 3. 延迟 300ms 后跳转（确保数据发出去）
+                    setTimeout(() => {
+                        window.open(lineUrl, '_blank');
+                    }, 300);
+                });
+            }
+
+        });
+
+    </script>
+</body>
+</html>
