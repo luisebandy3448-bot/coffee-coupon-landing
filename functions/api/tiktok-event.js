@@ -49,10 +49,14 @@ export async function onRequest(context) {
       const referer = request.headers.get('referer') || url || '';
       
       // Build TikTok Events API request body
+      // Using event/track endpoint format with event_source_id for web events
+      const eventTime = event_time || Math.floor(Date.now() / 1000);
       const tiktokPayload = {
-        pixel_code: TIKTOK_PIXEL_ID,
         event: event_name,
-        timestamp: event_time || Math.floor(Date.now() / 1000).toString(),
+        event_source: 'WEB',
+        event_source_id: TIKTOK_PIXEL_ID,
+        event_time: eventTime.toString(),
+        event_id: `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`,
         context: {
           page: {
             url: referer
@@ -66,15 +70,26 @@ export async function onRequest(context) {
       };
 
       // Add event parameters
+      // For content_id, use contents array format if content_id is provided
       if (content_id) {
-        tiktokPayload.properties.content_id = content_id;
+        if (!tiktokPayload.properties.contents) {
+          tiktokPayload.properties.contents = [];
+        }
+        tiktokPayload.properties.contents.push({
+          content_id: content_id,
+          ...(content_type && { content_type: content_type }),
+          ...(content_name && { content_name: content_name })
+        });
+      } else {
+        // Fallback: add content_id directly to properties if no contents array
+        if (content_type) {
+          tiktokPayload.properties.content_type = content_type;
+        }
+        if (content_name) {
+          tiktokPayload.properties.content_name = content_name;
+        }
       }
-      if (content_type) {
-        tiktokPayload.properties.content_type = content_type;
-      }
-      if (content_name) {
-        tiktokPayload.properties.content_name = content_name;
-      }
+      
       if (value !== undefined) {
         tiktokPayload.properties.value = value;
       }
