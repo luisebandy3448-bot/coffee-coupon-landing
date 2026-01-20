@@ -148,7 +148,7 @@ export async function onRequest(context) {
       }
 
       // Send request to TikTok Events API
-      const response = await fetch(TIKTOK_API_URL, {
+      const apiResponse = await fetch(TIKTOK_API_URL, {
         method: 'POST',
         headers: {
           'Access-Token': TIKTOK_ACCESS_TOKEN,
@@ -158,29 +158,39 @@ export async function onRequest(context) {
       });
 
       // Log response status for debugging
-      console.log('TikTok API Response Status:', response.status);
+      console.log('TikTok API Response Status:', apiResponse.status);
+      console.log('TikTok API Response Headers:', Object.fromEntries(apiResponse.headers.entries()));
       
       let responseData;
+      const responseText = await apiResponse.text();
       try {
-        responseData = await response.json();
+        responseData = JSON.parse(responseText);
       } catch (e) {
-        const text = await response.text();
-        console.error('Failed to parse TikTok API response:', text);
-        responseData = { error: 'Invalid JSON response', raw: text };
+        console.error('Failed to parse TikTok API response:', responseText);
+        responseData = { 
+          error: 'Invalid JSON response', 
+          raw: responseText,
+          status: apiResponse.status,
+          statusText: apiResponse.statusText
+        };
       }
 
-      if (!response.ok) {
-        console.error('TikTok API Error:', {
-          status: response.status,
-          statusText: response.statusText,
-          data: responseData
+      if (!apiResponse.ok) {
+        console.error('TikTok API Error Details:', {
+          status: apiResponse.status,
+          statusText: apiResponse.statusText,
+          url: TIKTOK_API_URL,
+          payload: tiktokPayload,
+          response: responseData
         });
         return new Response(JSON.stringify({
           error: 'Failed to send event to TikTok',
-          status: response.status,
-          details: responseData
+          status: apiResponse.status,
+          statusText: apiResponse.statusText,
+          details: responseData,
+          payload_sent: tiktokPayload
         }), {
-          status: response.status || 500,
+          status: apiResponse.status || 500,
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json'
@@ -189,7 +199,16 @@ export async function onRequest(context) {
       }
       
       // Log success for debugging
-      console.log('TikTok API Success:', responseData);
+      console.log('TikTok API Success Response:', responseData);
+      
+      // Check if TikTok returned any warnings or errors in success response
+      if (responseData.data && responseData.data.length > 0) {
+        responseData.data.forEach((eventResult, index) => {
+          if (eventResult.error_code !== 0) {
+            console.warn(`TikTok Event ${index} warning:`, eventResult);
+          }
+        });
+      }
 
       // Return success
       return new Response(JSON.stringify({
