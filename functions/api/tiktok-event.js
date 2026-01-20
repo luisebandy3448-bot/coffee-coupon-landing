@@ -57,7 +57,9 @@ export async function onRequest(context) {
         phone,
         external_id,
         ttclid,
-        ttp
+        ttp,
+        // Test event code for TikTok testing environment
+        test_event_code
       } = requestData;
 
       // Get client information
@@ -143,6 +145,11 @@ export async function onRequest(context) {
         event_source_id: TIKTOK_PIXEL_ID,
         data: [eventObj]
       };
+      
+      // Add test_event_code if provided (for TikTok testing environment)
+      if (test_event_code) {
+        tiktokPayload.test_event_code = test_event_code;
+      }
 
       // Log payload for debugging (remove in production if needed)
       console.log('TikTok API Payload:', JSON.stringify(tiktokPayload, null, 2));
