@@ -158,13 +158,16 @@ export async function onRequest(context) {
       }
 
       // Send request to TikTok Events API
+      // IMPORTANT: v1.3 /event/track expects { data: [ { ...event } ] }
       const apiResponse = await fetch(TIKTOK_API_URL, {
         method: 'POST',
         headers: {
           'Access-Token': TIKTOK_ACCESS_TOKEN,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(tiktokPayload)
+        body: JSON.stringify({
+          data: [tiktokPayload]
+        })
       });
 
       // Log response status for debugging
