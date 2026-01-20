@@ -1,10 +1,10 @@
-// TikTok Events API - Cloudflare Worker
-// 环境变量 TIKTOK_ACCESS_TOKEN 需要在 wrangler.toml 或 Cloudflare Dashboard 中设置
+// TikTok Events API - Cloudflare Pages Function
+// 环境变量 TIKTOK_ACCESS_TOKEN 需要在 Cloudflare Dashboard 中设置
 const TIKTOK_PIXEL_ID = 'D5N8BT3C77UFLMP0ARDG';
 const TIKTOK_API_URL = 'https://business-api.tiktok.com/open_api/v1.3/event/track/';
 
-export default {
-  async fetch(request, env) {
+export async function onRequest(context) {
+  const { request, env } = context;
     // 只处理POST请求
     if (request.method !== 'POST') {
       if (request.method === 'OPTIONS') {
