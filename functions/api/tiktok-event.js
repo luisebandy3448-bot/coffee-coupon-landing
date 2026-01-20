@@ -106,7 +106,15 @@ export async function onRequest(context) {
       if (content_type) propertiesObj.content_type = content_type;
       if (content_name) propertiesObj.content_name = content_name;
       
+      // Build page object (should be at event level, not in context)
+      const pageObj = {};
+      if (referer || url) {
+        pageObj.url = referer || url || '';
+      }
+      
       // Build event object (inside data array)
+      // According to TikTok API documentation, structure should be:
+      // { event, event_time, event_id, user, properties, page }
       const eventObj = {
         event: event_name,
         event_time: eventTime.toString(),
@@ -115,19 +123,16 @@ export async function onRequest(context) {
         properties: propertiesObj
       };
       
-      // Add page context if URL is available
-      if (referer || url) {
-        eventObj.context = {
-          page: {
-            url: referer || url || ''
-          }
-        };
+      // Add page object if URL is available
+      if (Object.keys(pageObj).length > 0) {
+        eventObj.page = pageObj;
       }
       
-      // Add ad parameters if available
+      // Add context for ad parameters (ttclid, ttp) if available
+      // Note: According to some docs, ad parameters might go in context.ad
       if (ttclid || ttp) {
         if (!eventObj.context) eventObj.context = {};
-        eventObj.context.ad = {};
+        if (!eventObj.context.ad) eventObj.context.ad = {};
         if (ttclid) eventObj.context.ad.callback = ttclid;
         if (ttp) eventObj.context.ad.ttp = ttp;
       }
