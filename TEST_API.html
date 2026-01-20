@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test TikTok Events API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test TikTok Events API</h1>
+    
+    <div class="test-box">
+        <h2>Test 1: Basic Event</h2>
+        <button onclick="testBasicEvent()">Send Test Event</button>
+        <div id="result1" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Test 2: ClickButton Event</h2>
+        <button onclick="testClickButton()">Send ClickButton Event</button>
+        <div id="result2" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Test 3: CopyCode Event</h2>
+        <button onclick="testCopyCode()">Send CopyCode Event</button>
+        <div id="result3" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Test 4: ConfirmLine Event</h2>
+        <button onclick="testConfirmLine()">Send ConfirmLine Event</button>
+        <div id="result4" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        async function testEvent(eventName, params, resultId) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = 'Sending...';
+            resultDiv.className = 'result';
+            
+            try {
+                const response = await fetch('/api/tiktok-event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_name: eventName,
+                        event_time: Math.floor(Date.now() / 1000),
+                        url: window.location.href,
+                        ...params
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = 'Success!\n' + JSON.stringify(data, null, 2);
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = 'Error: ' + response.status + '\n' + JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Exception: ' + error.message;
+            }
+        }
+        
+        function testBasicEvent() {
+            testEvent('ClickButton', {
+                content_id: 'test_basic_event'
+            }, 'result1');
+        }
+        
+        function testClickButton() {
+            testEvent('ClickButton', {
+                content_id: 'line_friend_add_button',
+                content_type: 'button_click',
+                content_name: 'LINE 친구추가'
+            }, 'result2');
+        }
+        
+        function testCopyCode() {
+            testEvent('CopyCode', {
+                content_id: 'coffee_coupon_code',
+                content_type: 'coupon_code',
+                content_name: 'CoffeeJJang'
+            }, 'result3');
+        }
+        
+        function testConfirmLine() {
+            testEvent('ConfirmLine', {
+                content_id: 'line_confirmation_yes',
+                content_type: 'confirmation',
+                content_name: 'LINE Confirmation - Yes'
+            }, 'result4');
+        }
+    </script>
+</body>
+</html>

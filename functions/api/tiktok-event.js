@@ -6,6 +6,14 @@ const TIKTOK_API_URL = 'https://business-api.tiktok.com/open_api/v1.3/event/trac
 
 export async function onRequest(context) {
   const { request, env } = context;
+  
+  // Log all requests for debugging
+  console.log('Function called:', {
+    method: request.method,
+    url: request.url,
+    headers: Object.fromEntries(request.headers.entries())
+  });
+  
     // Only handle POST requests
     if (request.method !== 'POST') {
       if (request.method === 'OPTIONS') {
@@ -31,7 +39,9 @@ export async function onRequest(context) {
 
     try {
       // Parse request body
+      console.log('Parsing request body...');
       const requestData = await request.json();
+      console.log('Request data received:', requestData);
       const {
         event_name,
         event_time,
