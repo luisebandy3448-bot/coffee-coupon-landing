@@ -40,7 +40,14 @@ export async function onRequest(context) {
         content_type,
         content_name,
         value,
-        currency
+        currency,
+        event_id,
+        // Customer information parameters (optional)
+        email,
+        phone,
+        external_id,
+        ttclid,
+        ttp
       } = requestData;
 
       // Get client information
@@ -52,30 +59,53 @@ export async function onRequest(context) {
       // Build TikTok Events API request body
       // Using event/track endpoint format for v1.3 (unified endpoint)
       const eventTime = event_time || Math.floor(Date.now() / 1000);
-      const eventId = `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`;
+      const generatedEventId = event_id || `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`;
       
       const tiktokPayload = {
         event: event_name,
         event_source: 'WEB',
         event_source_id: TIKTOK_PIXEL_ID,
         event_time: eventTime.toString(),
-        event_id: eventId,
+        event_id: generatedEventId,
         context: {
           page: {
-            url: referer
+            url: referer || url || ''
           },
           user: {
             ...(userAgent && { user_agent: userAgent }),
-            ...(clientIP && { ip: clientIP.split(',')[0].trim() })
-          }
+            ...(clientIP && { ip: clientIP.split(',')[0].trim() }),
+            ...(email && { email: email }),
+            ...(phone && { phone: phone }),
+            ...(external_id && { external_id: external_id })
+          },
+          ...((ttclid || ttp) && {
+            ad: {
+              ...(ttclid && { callback: ttclid }),
+              ...(ttp && { ttp: ttp })
+            }
+          })
         },
-        properties: {}
+        properties: {
+          ...(url && { url: url })
+        }
       };
 
-      // Add event parameters
-      // content_id is required for TikTok Events API
+      // Add event parameters to properties
+      // According to TikTok API documentation:
+      // Event parameters: value, currency, content_id, content_type, content_name, event_id, event_time, url
+      
+      // Add value and currency
+      if (value !== undefined) {
+        tiktokPayload.properties.value = value;
+      }
+      if (currency) {
+        tiktokPayload.properties.currency = currency;
+      }
+      
+      // Add content_id (required parameter)
+      // Use contents array format (recommended by TikTok) and also add directly to properties
       if (content_id) {
-        // Use contents array format (recommended by TikTok)
+        // Add to contents array (recommended format for better tracking)
         if (!tiktokPayload.properties.contents) {
           tiktokPayload.properties.contents = [];
         }
@@ -84,21 +114,17 @@ export async function onRequest(context) {
           ...(content_type && { content_type: content_type }),
           ...(content_name && { content_name: content_name })
         });
-      } else {
-        // Fallback: add directly to properties if no content_id
-        if (content_type) {
-          tiktokPayload.properties.content_type = content_type;
-        }
-        if (content_name) {
-          tiktokPayload.properties.content_name = content_name;
-        }
+        
+        // Also add content_id directly to properties (for compatibility)
+        tiktokPayload.properties.content_id = content_id;
       }
       
-      if (value !== undefined) {
-        tiktokPayload.properties.value = value;
+      // Add content_type and content_name if provided (even without content_id)
+      if (content_type) {
+        tiktokPayload.properties.content_type = content_type;
       }
-      if (currency) {
-        tiktokPayload.properties.currency = currency;
+      if (content_name) {
+        tiktokPayload.properties.content_name = content_name;
       }
       
       // Log payload for debugging (remove in production if needed)
