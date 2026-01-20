@@ -68,75 +68,77 @@ export async function onRequest(context) {
       
       // Build TikTok Events API request body
       // Using event/track endpoint format for v1.3 (unified endpoint)
+      // Structure: { event_source, event_source_id, data: [{ event, event_time, event_id, user, properties }] }
       const eventTime = event_time || Math.floor(Date.now() / 1000);
       const generatedEventId = event_id || `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`;
       
-      const tiktokPayload = {
-        event: event_name,
-        event_source: 'web', // Must be lowercase: 'web', 'app', or 'offline'
-        event_source_id: TIKTOK_PIXEL_ID,
-        event_time: eventTime.toString(),
-        event_id: generatedEventId,
-        context: {
-          page: {
-            url: referer || url || ''
-          },
-          user: {
-            ...(userAgent && { user_agent: userAgent }),
-            ...(clientIP && { ip: clientIP.split(',')[0].trim() }),
-            ...(email && { email: email }),
-            ...(phone && { phone: phone }),
-            ...(external_id && { external_id: external_id })
-          },
-          ...((ttclid || ttp) && {
-            ad: {
-              ...(ttclid && { callback: ttclid }),
-              ...(ttp && { ttp: ttp })
-            }
-          })
-        },
-        properties: {
-          ...(url && { url: url })
-        }
-      };
-
-      // Add event parameters to properties
-      // According to TikTok API documentation:
-      // Event parameters: value, currency, content_id, content_type, content_name, event_id, event_time, url
+      // Build user object
+      const userObj = {};
+      if (userAgent) userObj.user_agent = userAgent;
+      if (clientIP) userObj.ip = clientIP.split(',')[0].trim();
+      if (email) userObj.email = email;
+      if (phone) userObj.phone = phone;
+      if (external_id) userObj.external_id = external_id;
       
-      // Add value and currency
-      if (value !== undefined) {
-        tiktokPayload.properties.value = value;
-      }
-      if (currency) {
-        tiktokPayload.properties.currency = currency;
-      }
+      // Build properties object
+      const propertiesObj = {};
+      if (url) propertiesObj.url = url;
+      if (value !== undefined) propertiesObj.value = value;
+      if (currency) propertiesObj.currency = currency;
       
       // Add content_id (required parameter)
-      // Use contents array format (recommended by TikTok) and also add directly to properties
       if (content_id) {
-        // Add to contents array (recommended format for better tracking)
-        if (!tiktokPayload.properties.contents) {
-          tiktokPayload.properties.contents = [];
+        // Use contents array format (recommended by TikTok)
+        if (!propertiesObj.contents) {
+          propertiesObj.contents = [];
         }
-        tiktokPayload.properties.contents.push({
+        propertiesObj.contents.push({
           content_id: content_id,
           ...(content_type && { content_type: content_type }),
           ...(content_name && { content_name: content_name })
         });
         
         // Also add content_id directly to properties (for compatibility)
-        tiktokPayload.properties.content_id = content_id;
+        propertiesObj.content_id = content_id;
       }
       
-      // Add content_type and content_name if provided (even without content_id)
-      if (content_type) {
-        tiktokPayload.properties.content_type = content_type;
-      }
-      if (content_name) {
-        tiktokPayload.properties.content_name = content_name;
+      // Add content_type and content_name if provided
+      if (content_type) propertiesObj.content_type = content_type;
+      if (content_name) propertiesObj.content_name = content_name;
+      
+      // Build event object (inside data array)
+      const eventObj = {
+        event: event_name,
+        event_time: eventTime.toString(),
+        event_id: generatedEventId,
+        user: userObj,
+        properties: propertiesObj
+      };
+      
+      // Add page context if URL is available
+      if (referer || url) {
+        eventObj.context = {
+          page: {
+            url: referer || url || ''
+          }
+        };
       }
       
+      // Add ad parameters if available
+      if (ttclid || ttp) {
+        if (!eventObj.context) eventObj.context = {};
+        eventObj.context.ad = {};
+        if (ttclid) eventObj.context.ad.callback = ttclid;
+        if (ttp) eventObj.context.ad.ttp = ttp;
+      }
+      
+      // Build final payload with correct structure
+      const tiktokPayload = {
+        event_source: 'web',
+        event_source_id: TIKTOK_PIXEL_ID,
+        data: [eventObj]
+      };
+
       // Log payload for debugging (remove in production if needed)
       console.log('TikTok API Payload:', JSON.stringify(tiktokPayload, null, 2));
 
@@ -158,16 +160,14 @@ export async function onRequest(context) {
       }
 
       // Send request to TikTok Events API
-      // IMPORTANT: v1.3 /event/track expects { data: [ { ...event } ] }
+      // Payload structure: { event_source, event_source_id, data: [{ event, event_time, event_id, user, properties, context }] }
       const apiResponse = await fetch(TIKTOK_API_URL, {
         method: 'POST',
         headers: {
           'Access-Token': TIKTOK_ACCESS_TOKEN,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          data: [tiktokPayload]
-        })
+        body: JSON.stringify(tiktokPayload)
       });
 
       // Log response status for debugging
