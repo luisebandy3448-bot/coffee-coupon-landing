@@ -183,7 +183,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             outline-offset: 2px;
         }
 
-        /* 内联复制按钮样式 */
+        /* Inline copy button styles */
         .code-with-copy {
             display: flex;
             align-items: center;
@@ -335,13 +335,13 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             }
         }
 
-        /* 提取内联样式为类 */
+        /* Extract inline styles to classes */
         .text-muted {
             color: var(--color-text-muted);
             font-size: 14px;
         }
 
-        /* 紧迫感样式 */
+        /* Urgency styles */
         .urgent-limit {
             color: #ff4444;
             font-size: 15px;
@@ -398,7 +398,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             color: var(--color-primary);
         }
 
-        /* 确认对话框样式 */
+        /* Confirmation modal styles */
         .confirmation-modal {
             position: fixed;
             top: 0;
@@ -497,7 +497,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             display: block !important;
         }
 
-        /* 卡片提示样式 */
+        /* Toast card styles */
         .toast-card {
             position: fixed;
             top: 50%;
@@ -540,7 +540,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     </style>
 </head>
 <body>
-    <!-- 确认对话框 -->
+    <!-- Confirmation Dialog -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="confirmation-content">
             <h2 class="confirmation-title">🎉 축하합니다!</h2>
@@ -562,7 +562,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         </div>
     </div>
 
-    <!-- 主页面内容 -->
+    <!-- Main Page Content -->
     <main class="container" id="mainContent">
         <h1 class="neon-title">☕ 커피 쿠폰은 LINE에서만!</h1>
         
@@ -602,7 +602,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
     <script>
         'use strict';
 
-        // 音频上下文单例，避免重复创建
+        // Audio context singleton to avoid repeated creation
         let audioContext = null;
         const getAudioContext = () => {
             if (!audioContext) {
@@ -614,13 +614,13 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             return audioContext;
         };
 
-        // 通用音频播放函数
+        // Generic audio playback function
         const playSound = (frequency, duration, gainValue = 0.3) => {
             try {
                 const ctx = getAudioContext();
                 if (!ctx) return;
                 
-                // 如果上下文被暂停，恢复它
+                // Resume context if suspended
                 if (ctx.state === 'suspended') {
                     ctx.resume();
                 }
@@ -641,14 +641,14 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 oscillator.start(now);
                 oscillator.stop(now + duration);
             } catch (error) {
-                // 静默失败，不影响主要功能
+                // Fail silently, don't affect main functionality
                 console.debug('Audio playback failed:', error);
             }
         };
 
         const playSuccessSound = () => {
             playSound(800, 0.2, 0.3);
-            // 添加第二个音调创造成功感
+            // Add second tone for success feeling
             setTimeout(() => playSound(1000, 0.15, 0.2), 50);
         };
 
@@ -656,15 +656,15 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             playSound(400, 0.15, 0.2);
         };
 
-        // 显示卡片提示
+        // Show toast card notification
         const showToast = (message, icon = '✅') => {
-            // 移除已存在的提示
+            // Remove existing toast if any
             const existingToast = document.querySelector('.toast-card');
             if (existingToast) {
                 existingToast.remove();
             }
 
-            // 创建新的提示卡片
+            // Create new toast card
             const toast = document.createElement('div');
             toast.className = 'toast-card';
             toast.innerHTML = `
@@ -673,12 +673,12 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             `;
             document.body.appendChild(toast);
 
-            // 触发显示动画
+            // Trigger show animation
             requestAnimationFrame(() => {
                 toast.classList.add('show');
             });
 
-            // 1秒后自动隐藏并移除
+            // Auto hide and remove after 1 second
             setTimeout(() => {
                 toast.classList.remove('show');
                 toast.classList.add('hide');
@@ -690,7 +690,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             }, 1000);
         };
 
-        // 复制文本到剪贴板
+        // Copy text to clipboard
         const copyText = async () => {
             const textElement = document.getElementById('textToCopy');
             if (!textElement) {
@@ -705,19 +705,19 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 return;
             }
             
-            // 优先使用现代 Clipboard API
+            // Prefer modern Clipboard API
             if (navigator.clipboard?.writeText) {
                 try {
                     await navigator.clipboard.writeText(text);
                     playSuccessSound();
                     showToast('복사 완료!', '✅');
-                    // 发送到Netlify Function
+                    // Send to Cloudflare Worker
                     await sendTikTokEvent('CopyCode', {
                         content_id: 'coffee_coupon_code',
                         content_type: 'coupon_code',
                         content_name: 'CoffeeJJang'
                     });
-                    // TikTok Pixel 跟踪复制事件
+                    // TikTok Pixel track copy event
                     if (typeof ttq !== 'undefined') {
                         ttq.track('CopyCode', {
                             content_id: 'coffee_coupon_code'
@@ -729,7 +729,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 }
             }
             
-            // 降级方案：使用传统方法
+            // Fallback: use traditional method
             playErrorSound();
             try {
                 const textArea = document.createElement('textarea');
@@ -750,13 +750,13 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 if (successful) {
                     playSuccessSound();
                     showToast('복사 완료!', '✅');
-                    // 发送到Netlify Function
+                    // Send to Cloudflare Worker
                     await sendTikTokEvent('CopyCode', {
                         content_id: 'coffee_coupon_code',
                         content_type: 'coupon_code',
                         content_name: 'CoffeeJJang'
                     });
-                    // TikTok Pixel 跟踪复制事件
+                    // TikTok Pixel track copy event
                     if (typeof ttq !== 'undefined') {
                         ttq.track('CopyCode', {
                             content_id: 'coffee_coupon_code'
@@ -771,7 +771,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             }
         };
 
-        // 发送事件到Cloudflare Worker（TikTok Events API）
+        // Send event to Cloudflare Worker (TikTok Events API)
         const sendTikTokEvent = async (eventName, eventParams = {}) => {
             try {
                 await fetch('/api/tiktok-event', {
@@ -785,24 +785,24 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                     })
                 });
             } catch (error) {
-                console.error(`Failed to send ${eventName} event to Netlify Function:`, error);
+                console.error(`Failed to send ${eventName} event to Cloudflare Worker:`, error);
             }
         };
 
-        // 确认对话框处理
+        // Handle confirmation dialog
         const handleConfirm = async (confirmed) => {
             const modal = document.getElementById('confirmationModal');
             const mainContent = document.getElementById('mainContent');
             
             if (confirmed) {
-                // 用户选择"네, 가능합니다"
-                // 发送到Netlify Function
+                // User selected "Yes, I can"
+                // Send to Cloudflare Worker
                 await sendTikTokEvent('ConfirmLine', {
                     content_id: 'line_confirmation_yes',
                     content_type: 'confirmation',
-                    content_name: 'LINE确认-是'
+                    content_name: 'LINE Confirmation - Yes'
                 });
-                // TikTok Pixel 跟踪确认按钮点击事件
+                // TikTok Pixel track confirm button click event
                 if (typeof ttq !== 'undefined') {
                     ttq.track('ConfirmLine', {
                         content_id: 'line_confirmation_yes'
@@ -810,45 +810,45 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 }
                 modal.classList.add('hide');
                 mainContent.classList.add('show');
-                // 保存用户选择到localStorage
+                // Save user choice to localStorage
                 localStorage.setItem('line_confirmed', 'true');
             } else {
-                // 用户选择"아니요, 불가능합니다"
-                // 发送到Netlify Function
+                // User selected "No, I cannot"
+                // Send to Cloudflare Worker
                 await sendTikTokEvent('RejectLine', {
                     content_id: 'line_confirmation_no',
                     content_type: 'confirmation',
-                    content_name: 'LINE确认-否'
+                    content_name: 'LINE Confirmation - No'
                 });
-                // TikTok Pixel 跟踪拒绝按钮点击事件
+                // TikTok Pixel track reject button click event
                 if (typeof ttq !== 'undefined') {
                     ttq.track('RejectLine', {
                         content_id: 'line_confirmation_no'
                     });
                 }
                 alert('LINE을 사용하지 않으시면 적립금을 받으실 수 없습니다.');
-                // 可以选择关闭页面或显示其他信息
-                // window.close(); // 如果是在新窗口中打开，可以关闭
+                // Optionally close page or show other information
+                // window.close(); // If opened in new window, can close
             }
         };
 
-        // 页面加载完成后初始化
+        // Initialize after page load
         document.addEventListener('DOMContentLoaded', () => {
-            // 检查用户是否已经确认过
+            // Check if user has already confirmed
             const alreadyConfirmed = localStorage.getItem('line_confirmed');
             const modal = document.getElementById('confirmationModal');
             const mainContent = document.getElementById('mainContent');
             
             if (alreadyConfirmed === 'true') {
-                // 如果已经确认过，直接显示主页面
+                // If already confirmed, show main page directly
                 modal.classList.add('hide');
                 mainContent.classList.add('show');
             } else {
-                // 否则显示确认对话框
+                // Otherwise show confirmation dialog
                 modal.classList.remove('hide');
                 mainContent.classList.remove('show');
             }
-            // 为文本框添加键盘支持（Enter键复制）
+            // Add keyboard support for text element (Enter key to copy)
             const textElement = document.getElementById('textToCopy');
             if (textElement) {
                 textElement.addEventListener('keydown', (e) => {
@@ -859,7 +859,7 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 });
             }
 
-            // 为复制按钮添加键盘支持（已通过button元素自动支持）
+            // Add keyboard support for copy button (already supported by button element)
             const copyButton = document.querySelector('.btn-copy');
             if (copyButton) {
                 copyButton.addEventListener('keydown', (e) => {
@@ -870,29 +870,29 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 });
             }
 
-            // LINE按钮点击跟踪
+            // LINE button click tracking
             const lineButton = document.getElementById('line-btn');
             if (lineButton) {
                 lineButton.addEventListener('click', async (e) => {
-                    e.preventDefault(); // 阻止默认跳转
+                    e.preventDefault(); // Prevent default navigation
                     
-                    const lineUrl = lineButton.href; // 获取LINE链接
+                    const lineUrl = lineButton.href; // Get LINE URL
                     
-                    // 1. 发送到Netlify Function
+                    // 1. Send to Cloudflare Worker
                     await sendTikTokEvent('ClickButton', {
                         content_id: 'line_friend_add_button',
                         content_type: 'button_click',
                         content_name: 'LINE 친구추가'
                     });
                     
-                    // 2. TikTok Pixel 跟踪LINE按钮点击事件（客户端跟踪）
+                    // 2. TikTok Pixel track LINE button click event (client-side tracking)
                     if (typeof ttq !== 'undefined') {
                         ttq.track('ClickButton', {
                             content_id: 'line_friend_add_button'
                         });
                     }
                     
-                    // 3. 延迟 300ms 后跳转（确保数据发出去）
+                    // 3. Delay 300ms before navigation (ensure data is sent)
                     setTimeout(() => {
                         window.open(lineUrl, '_blank');
                     }, 300);

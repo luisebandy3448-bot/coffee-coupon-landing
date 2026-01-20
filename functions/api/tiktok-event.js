@@ -1,14 +1,14 @@
 // TikTok Events API - Cloudflare Pages Function
-// 环境变量 TIKTOK_ACCESS_TOKEN 需要在 Cloudflare Dashboard 中设置
+// Environment variable TIKTOK_ACCESS_TOKEN needs to be set in Cloudflare Dashboard
 const TIKTOK_PIXEL_ID = 'D5N8BT3C77UFLMP0ARDG';
 const TIKTOK_API_URL = 'https://business-api.tiktok.com/open_api/v1.3/event/track/';
 
 export async function onRequest(context) {
   const { request, env } = context;
-    // 只处理POST请求
+    // Only handle POST requests
     if (request.method !== 'POST') {
       if (request.method === 'OPTIONS') {
-        // 处理OPTIONS预检请求
+        // Handle OPTIONS preflight request
         return new Response(null, {
           status: 200,
           headers: {
@@ -29,7 +29,7 @@ export async function onRequest(context) {
     }
 
     try {
-      // 解析请求体
+      // Parse request body
       const requestData = await request.json();
       const {
         event_name,
@@ -42,13 +42,13 @@ export async function onRequest(context) {
         currency
       } = requestData;
 
-      // 获取客户端信息
+      // Get client information
       const clientIP = request.headers.get('CF-Connecting-IP') || 
                       request.headers.get('X-Forwarded-For') || '';
       const userAgent = request.headers.get('user-agent') || '';
       const referer = request.headers.get('referer') || url || '';
       
-      // 构建TikTok Events API请求体
+      // Build TikTok Events API request body
       const tiktokPayload = {
         pixel_code: TIKTOK_PIXEL_ID,
         event: event_name,
@@ -59,13 +59,13 @@ export async function onRequest(context) {
           },
           user: {
             user_agent: userAgent,
-            ip: clientIP.split(',')[0].trim() // 获取第一个IP（如果是代理链）
+            ip: clientIP.split(',')[0].trim() // Get first IP if proxy chain
           }
         },
         properties: {}
       };
 
-      // 添加事件参数
+      // Add event parameters
       if (content_id) {
         tiktokPayload.properties.content_id = content_id;
       }
@@ -82,10 +82,10 @@ export async function onRequest(context) {
         tiktokPayload.properties.currency = currency;
       }
 
-      // 获取环境变量中的 Access Token
+      // Get Access Token from environment variables
       const TIKTOK_ACCESS_TOKEN = env.TIKTOK_ACCESS_TOKEN;
 
-      // 如果没有access token，返回错误
+      // If no access token, return error
       if (!TIKTOK_ACCESS_TOKEN) {
         console.error('TikTok ACCESS_TOKEN is not configured');
         return new Response(JSON.stringify({
@@ -99,7 +99,7 @@ export async function onRequest(context) {
         });
       }
 
-      // 发送请求到TikTok Events API
+      // Send request to TikTok Events API
       const response = await fetch(TIKTOK_API_URL, {
         method: 'POST',
         headers: {
@@ -125,7 +125,7 @@ export async function onRequest(context) {
         });
       }
 
-      // 成功返回
+      // Return success
       return new Response(JSON.stringify({
         success: true,
         message: 'Event sent to TikTok successfully',
