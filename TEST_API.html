@@ -53,6 +53,13 @@
     <h1>Test TikTok Events API</h1>
     
     <div class="test-box">
+        <h2>TikTok Test Event Code</h2>
+        <p>Enter your test event code from TikTok testing environment (e.g., TEST32049):</p>
+        <input type="text" id="testEventCode" placeholder="TEST32049" style="width: 200px; padding: 8px; margin-right: 10px;">
+        <small style="color: #666;">Leave empty for production events</small>
+    </div>
+    
+    <div class="test-box">
         <h2>Test 1: Basic Event</h2>
         <button onclick="testBasicEvent()">Send Test Event</button>
         <div id="result1" class="result" style="display:none;"></div>
@@ -83,16 +90,26 @@
             resultDiv.textContent = 'Sending...';
             resultDiv.className = 'result';
             
+            // Get test_event_code from input field
+            const testEventCode = document.getElementById('testEventCode').value.trim();
+            
             try {
+                const payload = {
+                    event_name: eventName,
+                    event_time: Math.floor(Date.now() / 1000),
+                    url: window.location.href,
+                    ...params
+                };
+                
+                // Add test_event_code if provided
+                if (testEventCode) {
+                    payload.test_event_code = testEventCode;
+                }
+                
                 const response = await fetch('/api/tiktok-event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        event_name: eventName,
-                        event_time: Math.floor(Date.now() / 1000),
-                        url: window.location.href,
-                        ...params
-                    })
+                    body: JSON.stringify(payload)
                 });
                 
                 const data = await response.json();
