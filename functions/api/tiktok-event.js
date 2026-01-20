@@ -1,6 +1,7 @@
 // TikTok Events API - Cloudflare Pages Function
 // Environment variable TIKTOK_ACCESS_TOKEN needs to be set in Cloudflare Dashboard
 const TIKTOK_PIXEL_ID = 'D5N8BT3C77UFLMP0ARDG';
+// TikTok Events API v1.3 unified endpoint
 const TIKTOK_API_URL = 'https://business-api.tiktok.com/open_api/v1.3/event/track/';
 
 export async function onRequest(context) {
@@ -49,29 +50,32 @@ export async function onRequest(context) {
       const referer = request.headers.get('referer') || url || '';
       
       // Build TikTok Events API request body
-      // Using event/track endpoint format with event_source_id for web events
+      // Using event/track endpoint format for v1.3 (unified endpoint)
       const eventTime = event_time || Math.floor(Date.now() / 1000);
+      const eventId = `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`;
+      
       const tiktokPayload = {
         event: event_name,
         event_source: 'WEB',
         event_source_id: TIKTOK_PIXEL_ID,
         event_time: eventTime.toString(),
-        event_id: `${event_name}_${eventTime}_${Math.random().toString(36).substr(2, 9)}`,
+        event_id: eventId,
         context: {
           page: {
             url: referer
           },
           user: {
-            user_agent: userAgent,
-            ip: clientIP.split(',')[0].trim() // Get first IP if proxy chain
+            ...(userAgent && { user_agent: userAgent }),
+            ...(clientIP && { ip: clientIP.split(',')[0].trim() })
           }
         },
         properties: {}
       };
 
       // Add event parameters
-      // For content_id, use contents array format if content_id is provided
+      // content_id is required for TikTok Events API
       if (content_id) {
+        // Use contents array format (recommended by TikTok)
         if (!tiktokPayload.properties.contents) {
           tiktokPayload.properties.contents = [];
         }
@@ -81,7 +85,7 @@ export async function onRequest(context) {
           ...(content_name && { content_name: content_name })
         });
       } else {
-        // Fallback: add content_id directly to properties if no contents array
+        // Fallback: add directly to properties if no content_id
         if (content_type) {
           tiktokPayload.properties.content_type = content_type;
         }
@@ -96,6 +100,9 @@ export async function onRequest(context) {
       if (currency) {
         tiktokPayload.properties.currency = currency;
       }
+      
+      // Log payload for debugging (remove in production if needed)
+      console.log('TikTok API Payload:', JSON.stringify(tiktokPayload, null, 2));
 
       // Get Access Token from environment variables
       const TIKTOK_ACCESS_TOKEN = env.TIKTOK_ACCESS_TOKEN;
@@ -124,12 +131,27 @@ export async function onRequest(context) {
         body: JSON.stringify(tiktokPayload)
       });
 
-      const responseData = await response.json();
+      // Log response status for debugging
+      console.log('TikTok API Response Status:', response.status);
+      
+      let responseData;
+      try {
+        responseData = await response.json();
+      } catch (e) {
+        const text = await response.text();
+        console.error('Failed to parse TikTok API response:', text);
+        responseData = { error: 'Invalid JSON response', raw: text };
+      }
 
       if (!response.ok) {
-        console.error('TikTok API Error:', responseData);
+        console.error('TikTok API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          data: responseData
+        });
         return new Response(JSON.stringify({
           error: 'Failed to send event to TikTok',
+          status: response.status,
           details: responseData
         }), {
           status: response.status || 500,
@@ -139,6 +161,9 @@ export async function onRequest(context) {
           }
         });
       }
+      
+      // Log success for debugging
+      console.log('TikTok API Success:', responseData);
 
       // Return success
       return new Response(JSON.stringify({
