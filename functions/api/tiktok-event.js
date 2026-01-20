@@ -73,7 +73,7 @@ export async function onRequest(context) {
       
       const tiktokPayload = {
         event: event_name,
-        event_source: 'WEB',
+        event_source: 'web', // Must be lowercase: 'web', 'app', or 'offline'
         event_source_id: TIKTOK_PIXEL_ID,
         event_time: eventTime.toString(),
         event_id: generatedEventId,
