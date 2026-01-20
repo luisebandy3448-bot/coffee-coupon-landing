@@ -711,16 +711,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                     await navigator.clipboard.writeText(text);
                     playSuccessSound();
                     showToast('복사 완료!', '✅');
-                    // Send to Cloudflare Worker
-                    await sendTikTokEvent('CopyCode', {
+                    // Send to Cloudflare Worker and get event_id
+                    const eventId = await sendTikTokEvent('CopyCode', {
                         content_id: 'coffee_coupon_code',
                         content_type: 'coupon_code',
                         content_name: 'CoffeeJJang'
                     });
-                    // TikTok Pixel track copy event
-                    if (typeof ttq !== 'undefined') {
+                    // TikTok Pixel track copy event with same event_id
+                    if (typeof ttq !== 'undefined' && eventId) {
                         ttq.track('CopyCode', {
-                            content_id: 'coffee_coupon_code'
+                            content_id: 'coffee_coupon_code',
+                            event_id: eventId // Use same event_id for deduplication
                         });
                     }
                     return;
@@ -750,16 +751,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 if (successful) {
                     playSuccessSound();
                     showToast('복사 완료!', '✅');
-                    // Send to Cloudflare Worker
-                    await sendTikTokEvent('CopyCode', {
+                    // Send to Cloudflare Worker and get event_id
+                    const eventId = await sendTikTokEvent('CopyCode', {
                         content_id: 'coffee_coupon_code',
                         content_type: 'coupon_code',
                         content_name: 'CoffeeJJang'
                     });
-                    // TikTok Pixel track copy event
-                    if (typeof ttq !== 'undefined') {
+                    // TikTok Pixel track copy event with same event_id
+                    if (typeof ttq !== 'undefined' && eventId) {
                         ttq.track('CopyCode', {
-                            content_id: 'coffee_coupon_code'
+                            content_id: 'coffee_coupon_code',
+                            event_id: eventId // Use same event_id for deduplication
                         });
                     }
                 } else {
@@ -772,20 +774,37 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
         };
 
         // Send event to Cloudflare Worker (TikTok Events API)
+        // Generate unique event_id for deduplication
+        const generateEventId = (eventName) => {
+            const timestamp = Math.floor(Date.now() / 1000);
+            const random = Math.random().toString(36).substr(2, 9);
+            return `${eventName}_${timestamp}_${random}`;
+        };
+
         const sendTikTokEvent = async (eventName, eventParams = {}) => {
             try {
+                // Generate unique event_id for this event
+                const eventId = generateEventId(eventName);
+                const eventTime = Math.floor(Date.now() / 1000);
+                
+                // Send to server-side API with event_id
                 await fetch('/api/tiktok-event', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         event_name: eventName,
-                        event_time: Math.floor(Date.now() / 1000),
+                        event_time: eventTime,
+                        event_id: eventId, // Include event_id for deduplication
                         url: window.location.href,
                         ...eventParams
                     })
                 });
+                
+                // Return event_id so it can be used in client-side tracking
+                return eventId;
             } catch (error) {
                 console.error(`Failed to send ${eventName} event to Cloudflare Worker:`, error);
+                return null;
             }
         };
 
@@ -796,16 +815,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
             
             if (confirmed) {
                 // User selected "Yes, I can"
-                // Send to Cloudflare Worker
-                await sendTikTokEvent('ConfirmLine', {
+                // Send to Cloudflare Worker and get event_id
+                const eventId = await sendTikTokEvent('ConfirmLine', {
                     content_id: 'line_confirmation_yes',
                     content_type: 'confirmation',
                     content_name: 'LINE Confirmation - Yes'
                 });
-                // TikTok Pixel track confirm button click event
-                if (typeof ttq !== 'undefined') {
+                // TikTok Pixel track confirm button click event with same event_id
+                if (typeof ttq !== 'undefined' && eventId) {
                     ttq.track('ConfirmLine', {
-                        content_id: 'line_confirmation_yes'
+                        content_id: 'line_confirmation_yes',
+                        event_id: eventId // Use same event_id for deduplication
                     });
                 }
                 modal.classList.add('hide');
@@ -814,16 +834,17 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                 localStorage.setItem('line_confirmed', 'true');
             } else {
                 // User selected "No, I cannot"
-                // Send to Cloudflare Worker
-                await sendTikTokEvent('RejectLine', {
+                // Send to Cloudflare Worker and get event_id
+                const eventId = await sendTikTokEvent('RejectLine', {
                     content_id: 'line_confirmation_no',
                     content_type: 'confirmation',
                     content_name: 'LINE Confirmation - No'
                 });
-                // TikTok Pixel track reject button click event
-                if (typeof ttq !== 'undefined') {
+                // TikTok Pixel track reject button click event with same event_id
+                if (typeof ttq !== 'undefined' && eventId) {
                     ttq.track('RejectLine', {
-                        content_id: 'line_confirmation_no'
+                        content_id: 'line_confirmation_no',
+                        event_id: eventId // Use same event_id for deduplication
                     });
                 }
                 alert('LINE을 사용하지 않으시면 적립금을 받으실 수 없습니다.');
@@ -878,17 +899,18 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
                     
                     const lineUrl = lineButton.href; // Get LINE URL
                     
-                    // 1. Send to Cloudflare Worker
-                    await sendTikTokEvent('ClickButton', {
+                    // 1. Send to Cloudflare Worker and get event_id
+                    const eventId = await sendTikTokEvent('ClickButton', {
                         content_id: 'line_friend_add_button',
                         content_type: 'button_click',
                         content_name: 'LINE 친구추가'
                     });
                     
-                    // 2. TikTok Pixel track LINE button click event (client-side tracking)
-                    if (typeof ttq !== 'undefined') {
+                    // 2. TikTok Pixel track LINE button click event with same event_id (client-side tracking)
+                    if (typeof ttq !== 'undefined' && eventId) {
                         ttq.track('ClickButton', {
-                            content_id: 'line_friend_add_button'
+                            content_id: 'line_friend_add_button',
+                            event_id: eventId // Use same event_id for deduplication
                         });
                     }
                     
